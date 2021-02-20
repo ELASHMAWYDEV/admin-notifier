@@ -1,21 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import AppProvider from "./app/providers";
+import { useFonts } from "expo-font";
+import MainNavigation from "./app/navigation/MainNavigation";
+import { useNotifications } from "./app/hooks";
 
-export default function App() {
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    // @ts-ignore
+    "Cairo-Regular": require("./app/assets/fonts/Cairo-Regular.ttf"),
+    // @ts-ignore
+    "Cairo-SemiBold": require("./app/assets/fonts/Cairo-SemiBold.ttf"),
+    // @ts-ignore
+    "Cairo-Bold": require("./app/assets/fonts/Cairo-Bold.ttf"),
+  });
+
+  useNotifications();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppProvider>
+      {fontsLoaded && (
+        <>
+          <MainNavigation />
+        </>
+      )}
+    </AppProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
